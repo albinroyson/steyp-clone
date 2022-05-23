@@ -1,0 +1,8 @@
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" width="20" height="16.8" viewBox="0 0 20 16.8">
+  <g id="Options">
+    <path id="Path_99835" data-name="Path 99835" d="M16.2,9H19a1,1,0,0,0,0-2H16.2a1,1,0,1,0,0,2ZM6.2,7H1A1,1,0,0,0,1,9H6.2a1,1,0,0,0,0-2ZM3.8,16.2H1a1,1,0,0,0,0,2H3.8a1,1,0,1,0,0-2Zm15.2,0H13.8a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z" transform="translate(0 -4.2)" fill="#111"/>
+    <g id="Group_42340" data-name="Group 42340" transform="translate(3.6)">
+      <path id="Path_99836" data-name="Path 99836" d="M12.8,9.2A3.8,3.8,0,1,0,16.6,13,3.8,3.8,0,0,0,12.8,9.2Zm0,5.6A1.8,1.8,0,1,1,14.6,13a1.8,1.8,0,0,1-1.8,1.8ZM18,0a3.8,3.8,0,1,0,3.8,3.8A3.8,3.8,0,0,0,18,0Zm0,5.6a1.8,1.8,0,1,1,1.8-1.8A1.8,1.8,0,0,1,18,5.6Z" transform="translate(-9)" fill="#00c569"/>
+    </g>
+  </g>
+</svg>
