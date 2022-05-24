@@ -1,138 +1,173 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {Link, Outlet} from "react-router-dom";
+import axios from "axios";
+import { Link, Outlet } from "react-router-dom";
 import SideImage from "../../assests/Img/practiceSideImage.jpg";
-import Books from "../../assests/Img/books.png"
-import Locks from '../../assests/Img/lock.svg'
-import LessonImage from '../../assests/Img/lessonImage.jpg'
-import StarImages from '../../assests/Img/starimage.png'
+import Books from "../../assests/Img/books.png";
+import Locks from "../../assests/Img/lock.svg";
+import LessonImage from "../../assests/Img/lessonImage.jpg";
+import StarImages from "../../assests/Img/starimage.png";
+import HashLoader from "react-spinners/HashLoader";
+import ClipConiner from "react-spinners/ClipLoader";
 
-function Practices({isClicked,setClicked}) {
-    const data = [
-        {
-            id: 1,
-            PracticeName: "create a web site",
-            mark: "9/10",
-        },
-        {
-            id: 2,
-            PracticeName: "create a mbile site",
-            mark: "10/10",
-        },
-        {
-            id: 3,
-            PracticeName: "create a online site",
-            mark: "8/10",
-        },
-    ]
+function Practices({ isClicked, setClicked }) {
+    const [data, setData] = useState([]);
+    const access = "r7aHyPh69GLonqSdk3pFfkiDrtVJ0I";
+    useEffect(() => {
+        axios
+            .get(
+                "https://learn.steyp.com/api/v1/practices/completed-practices/tech-schooling/?response_length=3",
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
+            )
+            .then((res) => {
+                setData(res.data.data);
+                console.log("hi", res);
+                setLoading(true);
+            });
+    }, []);
+    const [loading, setLoading] = useState(false);
     return (
         <Practicecontainer id="main">
-          <Wrapper>
-            <LeftContainer>
-                <Top>
-                    <Title>Your Next Practice</Title>
-                    <ContentDiv>
-                        <ContentImgDiv>
-                            <img src={require("../../assests/Img/practiceImage.svg").default} alt="practiceImage" />
-                        </ContentImgDiv>
-                        <ContentSubDiv>
-                            <Heading>There are no practices active</Heading>
-                            <Paragraph>
-                                Currently, you have no practices to attend.
-                                Please go to your next activity to unlock more
-                                practices.
-                            </Paragraph>
-                            <Button to="/dashboard"  >Go to learn dashboard</Button>
-                        </ContentSubDiv>
-                    </ContentDiv>
-                </Top>
+            <Wrapper>
+                <LeftContainer>
+                    <Top>
+                        <Title>Your Next Practice</Title>
+                        <ContentDiv>
+                            <ContentImgDiv>
+                                <img
+                                    src={
+                                        require("../../assests/Img/practiceImage.svg")
+                                            .default
+                                    }
+                                    alt="practiceImage"
+                                />
+                            </ContentImgDiv>
+                            <ContentSubDiv>
+                                <Heading>There are no practices active</Heading>
+                                <Paragraph>
+                                    Currently, you have no practices to attend.
+                                    Please go to your next activity to unlock
+                                    more practices.
+                                </Paragraph>
+                                <Button to="/dashboard">
+                                    Go to learn dashboard
+                                </Button>
+                            </ContentSubDiv>
+                        </ContentDiv>
+                    </Top>
 
-                <LeftBottom>
-                    <SubTitle>Upcoming Practices</SubTitle>
-                    <Cover>
-                        <Card>
-                            <CardLeft>
-                                <img src={require("../../assests/Img/practiceSideImage.jpg")} alt="Side" />
-                            </CardLeft>
-                            <CardRight>
-                                <CardUpper>
-                                    <Number># 1</Number> | string operation
-                                </CardUpper>
-                                <CardBottom>
-                                    <Book>
-                                        <img src={require("../../assests/Img/books.png")} alt=" Books" />
-                                    </Book>
-                                    <Description>backend developer</Description>
-                                </CardBottom>
-                            </CardRight>
-                            <Lock>
-                                <img src={require("../../assests/Img/lock.svg").default} alt="" />
-                            </Lock>
-                        </Card>
-                    </Cover>
-                </LeftBottom>
-            </LeftContainer>
-
-            <Rightsession>
-                <RightSub>
-                    <RightTop>
-                        <Headings>Attended Practices</Headings>
-                        <View>View All</View>
-                    </RightTop>
-                    <Covers>
-                        {data.map((item) => (
-                            <Cards key={item.id}>
-                                <CardsLeft>
-                                    <CardsImage>
-                                        <img
-                                            src={require("../../assests/Img/lessonImage.jpg")}
-                                            alt="LessonImage"
-                                        />
-                                    </CardsImage>
-                                    <Spans>
-                                        <StarImage>
+                    <LeftBottom>
+                        <SubTitle>Upcoming Practices</SubTitle>
+                        <Cover>
+                            <Card>
+                                <CardLeft>
+                                    <img
+                                        src={require("../../assests/Img/practiceSideImage.jpg")}
+                                        alt="Side"
+                                    />
+                                </CardLeft>
+                                <CardRight>
+                                    <CardUpper>
+                                        <Number># 1</Number> | string operation
+                                    </CardUpper>
+                                    <CardBottom>
+                                        <Book>
                                             <img
-                                                src={StarImages}
-                                                alt=" StarImage"
+                                                src={require("../../assests/Img/books.png")}
+                                                alt=" Books"
                                             />
-                                        </StarImage>
-                                        {item.mark}
-                                    </Spans>
-                                </CardsLeft>
-                                <CardsRight>
-                                    <ContentsDiv>
-                                        <NumberDiv>#{item.id}</NumberDiv>
-                                        <Lessons>{item.PracticeName}</Lessons>
-                                    </ContentsDiv>
-                                </CardsRight>
-                            </Cards>
-                        ))}
-                    </Covers>
-                </RightSub>
-            </Rightsession>
-          </Wrapper>
+                                        </Book>
+                                        <Description>
+                                            backend developer
+                                        </Description>
+                                    </CardBottom>
+                                </CardRight>
+                                <Lock>
+                                    <img
+                                        src={
+                                            require("../../assests/Img/lock.svg")
+                                                .default
+                                        }
+                                        alt=""
+                                    />
+                                </Lock>
+                            </Card>
+                        </Cover>
+                    </LeftBottom>
+                </LeftContainer>
+
+                <Rightsession>
+                    <RightSub>
+                        <RightTop>
+                            <Headings>Attended Practices</Headings>
+                            <View>View All</View>
+                        </RightTop>
+                        {loading ? (
+                            <Covers>
+                                {data.map((item) => (
+                                    <Cards key={item.id}>
+                                        <CardsLeft>
+                                            <CardsImage>
+                                                <img
+                                                    src={item.image}
+                                                    alt="LessonImage"
+                                                />
+                                            </CardsImage>
+                                            <Spans>
+                                                <StarImage>
+                                                    <img
+                                                        src={StarImages}
+                                                        alt=" StarImage"
+                                                    />
+                                                </StarImage>
+                                                {item.mark}
+                                            </Spans>
+                                        </CardsLeft>
+                                        <CardsRight>
+                                            <ContentsDiv>
+                                                <NumberDiv>#1</NumberDiv>
+                                                <Lessons>{item.title}</Lessons>
+                                            </ContentsDiv>
+                                        </CardsRight>
+                                    </Cards>
+                                ))}
+                            </Covers>
+                        ) : (
+                            <ClipConiner>
+                                <HashLoader
+                                    color={"#446692"}
+                                    loading={loading}
+                                    size={50}
+                                />
+                            </ClipConiner>
+                        )}
+                    </RightSub>
+                </Rightsession>
+            </Wrapper>
         </Practicecontainer>
     );
 }
 
-export default Practices
+export default Practices;
 
-const Practicecontainer = styled.section`
- 
+const Practicecontainer = styled.section``;
+const Wrapper = styled.section`
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
 `;
-const Wrapper =styled.section`
-  width:95%;
-  margin:0 auto;
-  display: flex;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 20px;`
 const LeftContainer = styled.div`
     width: 48%;
 `;
-const Top = styled.div`
-`;
+const Top = styled.div``;
 const Title = styled.h2`
     font-size: 20px;
     color: rgb(24, 72, 76);
@@ -144,15 +179,13 @@ const ContentDiv = styled.div`
     border-radius: 5px;
 `;
 const ContentImgDiv = styled.div`
-    margin:  0 auto;
-    img{
+    margin: 0 auto;
+    img {
         display: block;
         width: 100%;
     }
 `;
-const ContentSubDiv = styled.div`
-
-`;
+const ContentSubDiv = styled.div``;
 const Heading = styled.h3`
     font-size: 20px;
     font-family: "gordita_medium";
@@ -172,7 +205,6 @@ const Button = styled(Link)`
     border-radius: 10px;
     font-size: 14px;
 `;
-
 
 const LeftBottom = styled.div`
     margin-top: 30px;
@@ -217,7 +249,6 @@ const CardLeft = styled.div`
 `;
 const CardRight = styled.div`
     width: 60%;
-
 `;
 const CardUpper = styled.h3`
     font-size: 14px;
@@ -232,7 +263,6 @@ const CardBottom = styled.div`
     -webkit-box-align: center;
     align-items: center;
     margin-top: 20px;
-  
 `;
 const Book = styled.div`
     display: inline-block;
@@ -254,16 +284,14 @@ const Lock = styled.div`
     bottom: 20px;
     right: 20px;
     font-size: 22px;
-    img{
+    img {
         display: block;
         width: 100%;
     }
 `;
 
-
 const Rightsession = styled.div`
     width: 50%;
-  
 `;
 const RightSub = styled.div`
     background-color: rgb(250, 250, 250);
@@ -334,7 +362,6 @@ const Spans = styled.span`
     border-radius: 30px;
     -webkit-box-align: center;
     align-items: center;
-
 `;
 const StarImage = styled.div`
     display: inline-block;

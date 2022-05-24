@@ -1,137 +1,190 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {Link, Outlet} from "react-router-dom"; 
+import { Link, Outlet } from "react-router-dom";
 import MainImage from "../../assests/Img/practiceImage.svg";
 import SideImage from "../../assests/Img/practiceSideImage.jpg";
-import Books from "../../assests/Img/books.png"
-import Locks from '../../assests/Img/lock.svg'
-import LessonImage from '../../assests/Img/lessonImage.jpg'
-import StarImages from '../../assests/Img/starimage.png'
-import topicimage from "../../assests/Img/caching_post_page.png"
+import Books from "../../assests/Img/books.png";
+import Locks from "../../assests/Img/lock.svg";
+import LessonImage from "../../assests/Img/lessonImage.jpg";
+import StarImages from "../../assests/Img/starimage.png";
+import topicimage from "../../assests/Img/caching_post_page.png";
+import axios from "axios";
+import HashLoader from "react-spinners/HashLoader";
+import ClipConiner from "react-spinners/ClipLoader";
 
 function Workshop() {
-    const data = [
-        {
-            id: 91,
-            WorkshopName: "| create a web site",
-            skill: "UI Engineer",
-            topicNo: 1,
-            duration: "4 mins",
-        },
-        {
-            id: 92,
-            WorkshopName: " | create a mbile site",
-            skill: "BackEnd developer",
-            topicNo: 4,
-            duration: "7 mins",
-        },
-        {
-            id: 93,
-            WorkshopName: "| create a online site",
-            skill: "BackEnd developer",
-            topicNo: 7,
-            duration: "9 mins",
-        },
-    ]
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
+    const access = "r7aHyPh69GLonqSdk3pFfkiDrtVJ0I";
+    useEffect(() => {
+        axios
+            .get(
+                "https://learn.steyp.com/api/v1/workshops/completed-workshops/tech-schooling/?response_length=3",
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
+            )
+            .then((res) => {
+                setData(res.data.data);
+                console.log("hi", res);
+                setLoading(true);
+            });
+    }, []);
+    const [newData, setnewData] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(
+                "https://learn.steyp.com/api/v1/workshops/upcoming-workshops/tech-schooling/",
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
+            )
+            .then((res) => {
+                setnewData(res.data.data[0]);
+                console.log("qwerrdfgdfgdfgtt res", res);
+            });
+    }, []);
+
     return (
         <Practicecontainer id="main">
-          <Wrapper>
-            <LeftContainer>
-                <Top>
-                    <Title>Your Next Workshop</Title>
-                    <ContentDiv>
-                        <ContentImgDiv>
-                            <img src={require("../../assests/Img/practiceImage.svg").default} alt="practiceImage" />
-                        </ContentImgDiv>
-                        <ContentSubDiv>
-                            <Heading>There are no Workshops active</Heading>
-                            <Paragraph>
-                                Currently, you have no Workshops to attend.
-                                Please go to your next activity to unlock more
-                                practices.
-                            </Paragraph>
-                            <Button to="/dashboard" >Go to learn dashboard</Button>
-                        </ContentSubDiv>
-                    </ContentDiv>
-                </Top>
+            <Wrapper>
+                <LeftContainer>
+                    <Top>
+                        <Title>Your Next Workshop</Title>
+                        <ContentDiv>
+                            <ContentImgDiv>
+                                <img
+                                    src={
+                                        require("../../assests/Img/practiceImage.svg")
+                                            .default
+                                    }
+                                    alt="practiceImage"
+                                />
+                            </ContentImgDiv>
+                            <ContentSubDiv>
+                                <Heading>There are no Workshops active</Heading>
+                                <Paragraph>
+                                    Currently, you have no Workshops to attend.
+                                    Please go to your next activity to unlock
+                                    more practices.
+                                </Paragraph>
+                                <Button to="/dashboard">
+                                    Go to learn dashboard
+                                </Button>
+                            </ContentSubDiv>
+                        </ContentDiv>
+                    </Top>
 
-                <LeftBottom>
-                    <SubTitle>Upcoming Workshops</SubTitle>
-                    <Cover>
-                        <Card>
-                            <CardLeft>
-                                <img src={SideImage} alt="SideImage" />
-                            </CardLeft>
-                            <CardRight>
-                                <CardUpper>
-                                    <Number># 1</Number> | string operation
-                                </CardUpper>
-                                <CardBottom>
-                                    <Book> 
-                                        <img src={require("../../assests/Img/practiceSideImage.jpg")} alt="Side" />
-                                    </Book>
-                                    <Description>backend developer</Description>
-                                </CardBottom>
-                            </CardRight>
-                            <Lock>
-                                <img src={Locks} alt="" />
-                            </Lock>
-                        </Card>
-                    </Cover>
-                </LeftBottom>
-            </LeftContainer>
+                    <LeftBottom>
+                        <SubTitle>Upcoming Workshops</SubTitle>
+                        <Cover>
+                            <Card>
+                                <CardLeft>
+                                    <img src={newData.image} alt="SideImage" />
+                                </CardLeft>
+                                <CardRight>
+                                    <CardUpper>
+                                        <Number># 1</Number> |{newData.title}
+                                    </CardUpper>
+                                    <CardBottom>
+                                        <Book>
+                                            <img
+                                                src={newData.image}
+                                                alt="Side"
+                                            />
+                                        </Book>
+                                        <Description></Description>
+                                    </CardBottom>
+                                </CardRight>
+                                <Lock>
+                                    <img src={Locks} alt="" />
+                                </Lock>
+                            </Card>
+                        </Cover>
+                    </LeftBottom>
+                </LeftContainer>
 
-            <Rightsession>
-                <RightSub>
-                    <RightTop>
-                        <Headings>Attended Workshops</Headings>
-                        <View>View All</View>
-                    </RightTop>
-                    <Covers>
-                        {data.map((item) => (
-                            <Cards key={item.id}>
-                                <CardsLeft>
-                                    <CardsImage>
-                                        <img
-                                            src={topicimage}
-                                            alt="LessonImage"
-                                        />
-                                    </CardsImage>
-                                </CardsLeft>
-                                <CardsRight>
-                                    <ContentsDiv>
-                                        <NumberDiv>#{item.id}</NumberDiv>
-                                        <Lessons>{item.WorkshopName}</Lessons>
-                                    </ContentsDiv>
-                                </CardsRight>
-                            </Cards>
-                        ))}
-                    </Covers>
-                </RightSub>
-            </Rightsession>
-          </Wrapper>
+                <Rightsession>
+                    <RightSub>
+                        <RightTop>
+                            <Headings>Attended Workshops</Headings>
+                            <View>View All</View>
+                        </RightTop>
+                        {loading ? (
+                            <Covers>
+                                {data.map((item) => (
+                                    <Cards key={item.id}>
+                                        <CardsLeft>
+                                            <CardsImage>
+                                                <img
+                                                    src={item.image}
+                                                    alt="LessonImage"
+                                                />
+                                            </CardsImage>
+                                        </CardsLeft>
+                                        <CardsRight>
+                                            <ContentsDiv>
+                                                <NumberDiv>#1</NumberDiv>
+                                                <Lessons>{item.title}</Lessons>
+                                            </ContentsDiv>
+                                            <Bottomdiv>
+                                                <Skilldiv>
+                                                    <Skillicon
+                                                        src={require("../../assests/Img/books.png")}
+                                                    />
+                                                    <Skillcount>
+                                                        {item.designation}
+                                                    </Skillcount>
+                                                </Skilldiv>
+                                                <Timediv>
+                                                    <Timeicon
+                                                        src={require("../../assests/Img/wall-clock.png")}
+                                                        alt="clock"
+                                                    />
+                                                    <Time>56 hrs,5 mins</Time>
+                                                </Timediv>
+                                            </Bottomdiv>
+                                        </CardsRight>
+                                    </Cards>
+                                ))}
+                            </Covers>
+                        ) : (
+                            <ClipConiner>
+                                <HashLoader
+                                    color={"#446692"}
+                                    loading={loading}
+                                    size={50}
+                                />
+                            </ClipConiner>
+                        )}
+                    </RightSub>
+                </Rightsession>
+            </Wrapper>
         </Practicecontainer>
     );
 }
 
-export default Workshop
+export default Workshop;
 
-const Practicecontainer = styled.section`
- 
+const Practicecontainer = styled.section``;
+const Wrapper = styled.section`
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
 `;
-const Wrapper =styled.section`
-  width:95%;
-  margin:0 auto;
-  display: flex;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 20px;`
 const LeftContainer = styled.div`
     width: 48%;
 `;
-const Top = styled.div`
-`;
+const Top = styled.div``;
 const Title = styled.h2`
     font-size: 20px;
     color: rgb(24, 72, 76);
@@ -143,15 +196,13 @@ const ContentDiv = styled.div`
     border-radius: 5px;
 `;
 const ContentImgDiv = styled.div`
-    margin:  0 auto;
-    img{
+    margin: 0 auto;
+    img {
         display: block;
         width: 100%;
     }
 `;
-const ContentSubDiv = styled.div`
-
-`;
+const ContentSubDiv = styled.div``;
 const Heading = styled.h3`
     font-size: 20px;
     font-family: "gordita_medium";
@@ -171,7 +222,6 @@ const Button = styled(Link)`
     border-radius: 10px;
     font-size: 14px;
 `;
-
 
 const LeftBottom = styled.div`
     margin-top: 30px;
@@ -216,7 +266,6 @@ const CardLeft = styled.div`
 `;
 const CardRight = styled.div`
     width: 60%;
-
 `;
 const CardUpper = styled.h3`
     font-size: 14px;
@@ -231,7 +280,6 @@ const CardBottom = styled.div`
     -webkit-box-align: center;
     align-items: center;
     margin-top: 20px;
-  
 `;
 const Book = styled.div`
     display: inline-block;
@@ -253,16 +301,14 @@ const Lock = styled.div`
     bottom: 20px;
     right: 20px;
     font-size: 22px;
-    img{
+    img {
         display: block;
         width: 100%;
     }
 `;
 
-
 const Rightsession = styled.div`
     width: 50%;
-  
 `;
 const RightSub = styled.div`
     background-color: rgb(250, 250, 250);
@@ -332,7 +378,6 @@ const Spans = styled.span`
     border-radius: 30px;
     -webkit-box-align: center;
     align-items: center;
-
 `;
 const StarImage = styled.div`
     display: inline-block;
@@ -352,7 +397,7 @@ const ContentsDiv = styled.div`
     font-size: 14px;
     max-width: 100%;
     line-height: 20px;
-    display:flex;
+    display: flex;
 `;
 const NumberDiv = styled.div`
     display: block;
@@ -364,4 +409,48 @@ const Lessons = styled.div`
     line-height: 20px;
     font-size: 20px;
     margin-left: 10px;
+`;
+const Bottomdiv = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 66%;
+
+    margin-top: 10px;
+`;
+const Skilldiv = styled.div`
+    display: flex;
+    align-items: center;
+`;
+const Skillicon = styled.img`
+    width: 100px;
+    display: block;
+    display: block;
+    width: 13px;
+    height: 13px;
+    color: green;
+    color: rgb(76, 175, 80);
+    font-size: 20px;
+    margin-right: 6px;
+`;
+const Skillcount = styled.span`
+    color: rgb(153, 153, 153);
+    font-size: 12px;
+`;
+const Timediv = styled.div`
+    display: flex;
+    align-items: center;
+`;
+const Timeicon = styled.img`
+    display: block;
+    width: 13px;
+    height: 13px;
+    color: green;
+    color: rgb(76, 175, 80);
+    font-size: 20px;
+    margin-right: 6px;
+`;
+const Time = styled.span`
+    display: block;
+    color: rgb(153, 153, 153);
+    font-size: 12px;
 `;
