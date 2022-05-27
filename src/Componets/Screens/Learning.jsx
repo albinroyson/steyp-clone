@@ -9,6 +9,7 @@ import Spotlight from "./Spotlight";
 import ui from "../../assests/Img/UI_Engineer.jpg";
 import dev from "../../assests/Img/DevOps_Engineer.jpg";
 import backend from "../../assests/Img/Backend_Developer_ACsVD3G.jpg";
+import { learnConfig } from "../../axiosConfig";
 
 export default function Learning() {
     const [isclicked, setClicked] = useState(false);
@@ -23,15 +24,12 @@ export default function Learning() {
     // //     },1000)
     // //   },[])
     useEffect(() => {
-        axios
-            .get(
-                "https://learn.steyp.com/api/v1/learn/designations/tech-schooling/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${access}`,
-                    },
-                }
-            )
+        learnConfig
+            .get("/learn/designations/tech-schooling/", {
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },
+            })
             .then((res) => {
                 setSubject(res.data.data);
                 console.log("albin###", res);

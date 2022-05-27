@@ -561,13 +561,10 @@ const Divitem = styled.div`
     @media all and (max-width: 768px) {
     }
     @media all and (max-width: 640px) {
-        width: 98%;
     }
     @media all and (max-width: 540px) {
-        width: 48%;
     }
     @media all and (max-width: 480px) {
-        width: 100%;
     }
     @media all and (max-width: 360px) {
     }
